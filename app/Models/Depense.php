@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Depense extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'user_id',
+        'title',
+        'amount',
+        'description'
+    ];
 }

@@ -14,4 +14,8 @@ class Depense extends Model
         'amount',
         'description'
     ];
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class,'depense_tag');
+    }
 }

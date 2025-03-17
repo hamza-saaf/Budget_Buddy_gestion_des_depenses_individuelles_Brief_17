@@ -22,7 +22,15 @@ use Illuminate\Support\Facades\Route;
 Route::apiResource('/users',UserController::class);
 Route::apiResource('/depenses',DepenseController::class);
 Route::apiResource('/tags',TagController::class);
+Route::post('/depenses/{id}/tags',[DepenseController::class,'attachTags']);
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+
+
+
+
+
+
+

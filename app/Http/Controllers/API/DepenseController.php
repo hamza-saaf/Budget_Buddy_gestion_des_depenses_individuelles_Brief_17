@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Depense;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class DepenseController extends Controller
@@ -30,7 +31,7 @@ class DepenseController extends Controller
         // $form = $request->all();
         // return Depense::create($form);
         $request->validate([
-            'user_id' => 'required|exists:users,id',
+            'user_id' => 'nullable|exists:users,id',
             'title' => 'required|string|max:255',
             'amount' => 'required|numeric|min:0',
             'description' => 'nullable|string|max:255',
@@ -90,6 +91,27 @@ class DepenseController extends Controller
         return response()->jsonn([
             'message' => 'la Depense a ete supprime',
             'id' => $depense->id,
+        ]);
+    }
+
+    public function attachTags(Request $request, $id)
+    {
+        $depense = Depense::findOrFail($id);
+        $tag = array_filter($request->input('tags', []));
+        // $tagIds = Tag::whereIn('id', $request->tags)->pluck('id')->toArray();
+
+        // if (!is_array($tagIds) || empty($tagIds)) {
+        //     return response()->json(['message' => 'No valid tags provided'], 400);
+        // }
+        if (!empty($tagIds) || !is_array($tag)) {
+            $tags = Tag::whereIn('id', $tag)->get();
+        } else {
+            $tags = collect();
+        }
+        $depense->tags()->sync( $tags);
+        return response()->json([
+            'message' => 'Tags attached successfully',
+            'Depense' => $depense->load('tags')
         ]);
     }
 }

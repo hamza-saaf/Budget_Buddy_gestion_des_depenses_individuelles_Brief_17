@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Depense;
+use App\Models\Expense;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class DepenseController extends Controller
+class ExpenseController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +17,7 @@ class DepenseController extends Controller
      */
     public function index()
     {
-        return Depense::all();
+        return Expense::all();
         // $depenses=Depense::all();
         // return response()->json($depenses);
     }
@@ -28,16 +29,16 @@ class DepenseController extends Controller
      */
     public function store(Request $request)
     {
-        // $form = $request->all();
-        // return Depense::create($form);
         $request->validate([
-            'user_id' => 'nullable|exists:users,id',
+            'user_id' =>Auth::user(),
+            'group_id'=>'nullable|exists:group,id',
             'title' => 'required|string|max:255',
             'amount' => 'required|numeric|min:0',
             'description' => 'nullable|string|max:255',
         ]);
-        $depense = Depense::create([
-            'user_id' => $request->user_id,
+        $depense = Expense::create([
+            'user_id' => $request->Auth::user(),
+            'group_id' =>$request->group_id,
             'title' => $request->title,
             'amount' => $request->amount,
             'description' => $request->description,
@@ -51,7 +52,7 @@ class DepenseController extends Controller
      * @param  \App\Models\Depense  $depense
      * @return \Illuminate\Http\Response
      */
-    public function show(Depense $depense)
+    public function show(Expense $depense)
     {
         return $depense;
     }
@@ -62,11 +63,8 @@ class DepenseController extends Controller
      * @param  \App\Models\Depense  $depense
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Depense $depense)
+    public function update(Request $request, Expense $depense)
     {
-        // $form=$request->all();
-        // $depense->fill($form)->save();
-        // return $depense;
         $validatedData = $request->validate([
             'user_id' => 'nullable|exists:users,id',
             'title' => 'required|string|max:255',
@@ -85,7 +83,7 @@ class DepenseController extends Controller
      * @param  \App\Models\Depense  $depense
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Depense $depense)
+    public function destroy(Expense $depense)
     {
         $depense->delete();
         return response()->jsonn([
@@ -96,7 +94,7 @@ class DepenseController extends Controller
 
     public function attachTags(Request $request, $id)
     {
-        $depense = Depense::findOrFail($id);
+        $depense = Expense::findOrFail($id);
         $tag = array_filter($request->input('tags', []));
         // $tagIds = Tag::whereIn('id', $request->tags)->pluck('id')->toArray();
 

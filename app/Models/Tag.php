@@ -13,6 +13,6 @@ class Tag extends Model
     ];
     public function expenses()
     {
-        return $this->belongsToMany(Depense::class,'depense_tag');
+        return $this->belongsToMany(Expense::class,'depense_tag');
     }
 }

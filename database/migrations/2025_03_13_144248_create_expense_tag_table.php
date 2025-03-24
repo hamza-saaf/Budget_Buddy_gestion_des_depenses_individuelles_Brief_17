@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDepenseTagTable extends Migration
+class CreateExpenseTagTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateDepenseTagTable extends Migration
      */
     public function up()
     {
-        Schema::create('depense_tag', function (Blueprint $table) {
+        Schema::create('expense_tag', function (Blueprint $table) {
             $table->id();
             $table->foreignId('depense_id')->constrained()->onDelete('cascade');
             $table->foreignId('tag_id')->constrained()->onDelete('cascade'); 
@@ -28,6 +28,6 @@ class CreateDepenseTagTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('depense_tag');
+        Schema::dropIfExists('expense_tag');
     }
 }

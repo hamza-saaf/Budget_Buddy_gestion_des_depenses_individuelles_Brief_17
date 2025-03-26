@@ -1,6 +1,5 @@
 <?php
 
-// app/Models/Expense.php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,11 +11,13 @@ class Expense extends Model
 
     protected $fillable = [
         'group_id',
-        'title',
+        'payer_id',
         'description',
         'amount',
         'date',
+        'split_type', // 'equal' ou 'custom'
     ];
+    
 
     protected $casts = [
         'date' => 'datetime',
@@ -28,13 +29,14 @@ class Expense extends Model
         return $this->belongsTo(Group::class);
     }
 
-    // public function payer()
-    // {
-    //     return $this->belongsTo(User::class, 'payer_id');
-    // }
+    public function payer()
+    {
+        return $this->belongsTo(User::class, 'payer_id');
+    }
 
-    // public function splits()
-    // {
-    //     return $this->hasMany(ExpenseSplit::class);
-    // }
+    public function splits()
+    {
+        return $this->hasMany(ExpenseSplit::class);
+    }
+
 }
